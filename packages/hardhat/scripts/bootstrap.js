@@ -39,6 +39,7 @@ async function main() {
   // Get the impersonated signer
   const whaleSigner = await hre.ethers.getSigner(whaleAddress);
 
+
   // Get the connected versions of the Ether's Contract objects
   // const whaleDai = await daiContract.connect(whaleSigner);
   // const whaleUsdc = await usdcContract.connect(whaleSigner);
@@ -51,32 +52,35 @@ async function main() {
   // console.log("whale DAI balance is", whaleDAIBalance.toString());
 
   const whaleFtmBalance = await whaleSigner.getBalance();
-  console.log("whale FTM balance is", whaleEthBalance.toString());
+  console.log("whale FTM balance is", whaleFtmBalance.toString());
 
   // The Recipient
   const recipient = "0xEA5A52f732BE2eCD218224f896431660FBa8512D"; // this is philipliao.eth :P
 
+  const recipientSigner = await hre.ethers.getSigner(recipient)
+
   // using the whaleUsdc Contract object because I'm lazy, but I just need a way to do a read only call. sorry for the confusion
-  const balanceBeforeUSDC = await whaleUsdc.balanceOf(recipient);
-  console.log("recipient USDC balance is", balanceBeforeUSDC.toString());
+  // const balanceBeforeUSDC = await whaleUsdc.balanceOf(recipient);
+  // console.log("recipient USDC balance is", balanceBeforeUSDC.toString());
+  //
+  // const balanceBeforeDAI = await whaleDai.balanceOf(recipient);
+  // console.log("recipient DAI balance is", balanceBeforeDAI.toString());
 
-  const balanceBeforeDAI = await whaleDai.balanceOf(recipient);
-  console.log("recipient DAI balance is", balanceBeforeDAI.toString());
-
-  await whaleUsdc.transfer(recipient, whaleUSDCBalance.toString());
-
-  await whaleDai.transfer(recipient, whaleDAIBalance.toString());
+  // await whaleUsdc.transfer(recipient, whaleUSDCBalance.toString());
+  //
+  // await whaleDai.transfer(recipient, whaleDAIBalance.toString());
 
   await whaleSigner.sendTransaction({to: recipient.toString(), value: hre.ethers.utils.parseEther("6000")});
 
-  const balanceAfterUSDC = await whaleUsdc.balanceOf(recipient);
-  console.log("recipient USDC balance is", balanceAfterUSDC.toString());
+  // const balanceAfterUSDC = await whaleUsdc.balanceOf(recipient);
+  // console.log("recipient USDC balance is", balanceAfterUSDC.toString());
+  //
+  // const balanceAfterDAI = await whaleDai.balanceOf(recipient);
+  // console.log("recipient DAI balance is", balanceAfterDAI.toString());
 
-  const balanceAfterDAI = await whaleDai.balanceOf(recipient);
-  console.log("recipient DAI balance is", balanceAfterDAI.toString());
+  const balanceAfterFtm = await recipientSigner.getBalance();
 
-  const balanceAfterEth = await whaleSigner.getBalance();
-  console.log("recipient ETH balance is", balanceAfterEth.toString());
+  console.log("recipient FTM balance is", balanceAfterFtm.toString());
   console.log(
     "Congrats! You have successfully transferred tokens to yourself!"
   );
