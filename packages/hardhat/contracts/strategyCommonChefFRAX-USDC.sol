@@ -1327,15 +1327,6 @@ contract GasThrottler {
 pragma solidity ^0.6.0;
 
 
-
-
-
-
-
-
-
-
-
 contract StrategyCommonChefLP is StratManager, FeeManager, GasThrottler {
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
